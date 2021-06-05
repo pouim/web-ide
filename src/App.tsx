@@ -1,11 +1,17 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from "react";
+import "./App.css";
+import TreeView from "./component/treeview";
+import { initialTreeData } from "./mock";
 
 function App() {
+  const [treeData, settreeData] = useState(initialTreeData);
+
   return (
-    <div className="App">
-       Hello there
+    <div className="container">
+      <div className="left">
+        <TreeView data={treeData} />
+      </div>
+      <div className="main">MAIN</div>
     </div>
   );
 }

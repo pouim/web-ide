@@ -1,0 +1,35 @@
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  background-color: rgba(0, 0, 0, 0.9);
+  height: 100vh;
+  color: white;
+  overflow: auto;
+}
+
+.left {
+  height: 90%;
+  width: 30%;
+  padding: 2rem 0;
+  background-color: red;
+  overflow: auto;
+
+}
+.main {
+  height: 90%;
+  width: 70%;
+  background-color: salmon;
+  overflow: auto;
+}
+
+
+@media screen and (max-width: 768px) {
+  .left{
+    width: 100%;
+  }
+  .main{
+    width: 100%;
+  }
+}
