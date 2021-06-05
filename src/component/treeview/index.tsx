@@ -5,24 +5,34 @@ import TreeItem from "./treeview-item";
 
 interface TreeViewProps {
   data: TreeData[];
+  onTreeItemClick?: any;
+  selectedID: number | null;
 }
 
-const TreeView: FC<TreeViewProps> = ({ data }) => {
-
+const TreeView: FC<TreeViewProps> = ({ data, onTreeItemClick, selectedID }) => {
+  /**
+   * define selected item
+   * @param id
+   * @returns
+   */
+  const isSelectedItem = (id: number) => id === selectedID;
 
   /**
    * render child tree items
-   * @param items 
-   * @returns 
+   * @param items
+   * @returns
    */
   const renderChildTreeItems = (items: TreeData[]) => {
     return items.map((item: TreeData) => {
       if (item.children && item.children.length > 0) {
         return (
           <TreeItem
+            id={item.id}
             name={item.name}
+            onClick={onTreeItemClick}
             isDefaultOpen={item.isOpen}
             isFolder={item.isFolder}
+            isSelected={isSelectedItem(item.id)}
           >
             {renderChildTreeItems(item.children)}
           </TreeItem>
@@ -30,20 +40,22 @@ const TreeView: FC<TreeViewProps> = ({ data }) => {
       } else {
         return (
           <TreeItem
+            id={item.id}
             name={item.name}
+            onClick={onTreeItemClick}
             isDefaultOpen={item.isOpen}
             isFolder={item.isFolder}
+            isSelected={isSelectedItem(item.id)}
           ></TreeItem>
         );
       }
     });
   };
 
-
   /**
-   * redder sun tree items 
-   * @param items 
-   * @returns 
+   * redder sun tree items
+   * @param items
+   * @returns
    */
 
   const renderSubTreeItems = (items: TreeData[]) => {
@@ -52,9 +64,12 @@ const TreeView: FC<TreeViewProps> = ({ data }) => {
         if (item.children && item.children.length > 0) {
           return (
             <TreeItem
+              id={item.id}
               name={item.name}
+              onClick={onTreeItemClick}
               isDefaultOpen={item.isOpen}
               isFolder={item.isFolder}
+              isSelected={isSelectedItem(item.id)}
             >
               {renderChildTreeItems(item.children)}
             </TreeItem>
@@ -62,9 +77,12 @@ const TreeView: FC<TreeViewProps> = ({ data }) => {
         } else {
           return (
             <TreeItem
+              id={item.id}
               name={item.name}
+              onClick={onTreeItemClick}
               isDefaultOpen={item.isOpen}
               isFolder={item.isFolder}
+              isSelected={isSelectedItem(item.id)}
             ></TreeItem>
           );
         }
@@ -74,11 +92,7 @@ const TreeView: FC<TreeViewProps> = ({ data }) => {
     return TreeNode;
   };
 
-  return (
-    <div className={styles["wrapper"]}>
-      {renderSubTreeItems(data)}
-    </div>
-  );
+  return <div className={styles["wrapper"]}>{renderSubTreeItems(data)}</div>;
 };
 
 export default TreeView;

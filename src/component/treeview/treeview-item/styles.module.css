@@ -1,19 +1,14 @@
 .wrapper {
     display: flex;
     align-items: center;
-    justify-content: space-between;
     cursor: pointer;
+    min-width: 100%;
     
 }
 
 .active {
     background-color: gray;
 
-}
-
-
-.children {
-    margin: .7rem 0 .7rem 2rem;
 }
 
 .arrow {

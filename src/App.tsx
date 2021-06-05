@@ -6,14 +6,24 @@ import { initialTreeData } from "./mock";
 
 function App() {
   const [treeData, settreeData] = useState(initialTreeData);
+  const [selectedID, setSelectedID] = useState<number | null>(null);
+
+  const onTreeItemClickHandler = (id: number) => {
+    setSelectedID(id);
+  };
+
+  
+
+
+ 
 
   return (
     <div className="container">
       <div className="left">
-        <TreeView data={treeData} />
+        <TreeView data={treeData} onTreeItemClick={onTreeItemClickHandler} selectedID={selectedID} />
       </div>
       <div className="main">
-        <CodeEditor />
+        {selectedID && <CodeEditor />}
       </div>
     </div>
   );
