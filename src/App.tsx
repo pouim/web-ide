@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import "./App.css";
+import CodeEditor from "./component/Code-Editor";
 import TreeView from "./component/treeview";
 import { initialTreeData } from "./mock";
 
@@ -11,7 +12,9 @@ function App() {
       <div className="left">
         <TreeView data={treeData} />
       </div>
-      <div className="main">MAIN</div>
+      <div className="main">
+        <CodeEditor />
+      </div>
     </div>
   );
 }
