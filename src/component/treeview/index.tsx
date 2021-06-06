@@ -7,6 +7,7 @@ interface TreeViewProps {
   data: TreeData[];
   onTreeItemClick?: any;
   onCreateNewFolder: any;
+  onCreateNewFile: any;
   selectedID: string | null;
 }
 
@@ -14,6 +15,7 @@ const TreeView: FC<TreeViewProps> = ({
   data,
   onTreeItemClick,
   onCreateNewFolder,
+  onCreateNewFile,
   selectedID,
 }) => {
   /**
@@ -37,6 +39,7 @@ const TreeView: FC<TreeViewProps> = ({
             name={item.name}
             onClick={onTreeItemClick}
             onCreateNewFolder={onCreateNewFolder}
+            onCreateNewFile={onCreateNewFile}
             isDefaultOpen={item.isOpen}
             isFolder={item.isFolder}
             isSelected={isSelectedItem(item.id)}
@@ -51,6 +54,7 @@ const TreeView: FC<TreeViewProps> = ({
             name={item.name}
             onClick={onTreeItemClick}
             onCreateNewFolder={onCreateNewFolder}
+            onCreateNewFile={onCreateNewFile}
             isDefaultOpen={item.isOpen}
             isFolder={item.isFolder}
             isSelected={isSelectedItem(item.id)}
@@ -76,6 +80,7 @@ const TreeView: FC<TreeViewProps> = ({
               name={item.name}
               onClick={onTreeItemClick}
               onCreateNewFolder={onCreateNewFolder}
+              onCreateNewFile={onCreateNewFile}
               isDefaultOpen={item.isOpen}
               isFolder={item.isFolder}
               isSelected={isSelectedItem(item.id)}
@@ -90,6 +95,7 @@ const TreeView: FC<TreeViewProps> = ({
               name={item.name}
               onClick={onTreeItemClick}
               onCreateNewFolder={onCreateNewFolder}
+              onCreateNewFile={onCreateNewFile}
               isDefaultOpen={item.isOpen}
               isFolder={item.isFolder}
               isSelected={isSelectedItem(item.id)}

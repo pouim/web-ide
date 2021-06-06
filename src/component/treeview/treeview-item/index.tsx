@@ -15,6 +15,7 @@ interface TreeItemProps {
   children?: React.ReactNode;
   onClick?: any;
   onCreateNewFolder: any;
+  onCreateNewFile: any;
 }
 
 const TreeItem: FC<TreeItemProps> = ({
@@ -26,6 +27,7 @@ const TreeItem: FC<TreeItemProps> = ({
   isSelected,
   onClick,
   onCreateNewFolder,
+  onCreateNewFile,
 }) => {
   const [isOpen, setIsOpen] = useState(isDefaultOpen);
 
@@ -43,7 +45,7 @@ const TreeItem: FC<TreeItemProps> = ({
     {
       id: 1,
       name: "New File",
-      onClick: () => {},
+      onClick: onCreateNewFile,
     },
     {
       id: 2,

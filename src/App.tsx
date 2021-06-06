@@ -101,6 +101,27 @@ function App() {
 
   }
 
+  const onCreateNewFile = () => {
+    const newFile: TreeData = {
+      id: uuid(),
+      name: 'New File',
+      parent: selectedID,
+      children: [],
+      isOpen: false,
+      isFolder: false,
+    }
+   
+   const foundedItem = findItem(treeData);
+   const updatedItem = {
+     ...foundedItem,
+     children: [...foundedItem.children, newFile],
+   };
+   const updatedeTreeData = updateTreeData(treeData, updatedItem);
+
+   settreeData(updatedeTreeData);
+
+ }
+
     
     
   
@@ -118,6 +139,7 @@ function App() {
           data={treeData}
           onTreeItemClick={onTreeItemClickHandler}
           onCreateNewFolder={onCreateNewFolder}
+          onCreateNewFile={onCreateNewFile}
           selectedID={selectedID}
         />
       </div>
