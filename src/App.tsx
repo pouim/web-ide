@@ -142,11 +142,23 @@ function App() {
       setIsEditMode(false);
     }
   };
+  
+  function recursiveRemove(list: TreeData[], id: string) {
+    return list
+      .map((item: TreeData) => {
+        return { ...item };
+      })
+      .filter((item: TreeData) => {
+        if ("children" in item) {
+          item.children = recursiveRemove(item.children, id);
+        }
+        return item.id !== id;
+      });
+  }
+
 
   const onDelete = () => {
-    const updatedTreeData = treeData.filter(
-      (item: TreeData) => item.id !== selectedItem.id
-    );
+    const updatedTreeData = recursiveRemove(treeData, selectedItem.id);
 
     settreeData(updatedTreeData);
   };
