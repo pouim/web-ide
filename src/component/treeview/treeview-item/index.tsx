@@ -7,13 +7,14 @@ import { ContextMenuItems } from "./Context-menu-items";
 import styles from "./styles.module.css";
 
 interface TreeItemProps {
-  id: number;
+  id: string;
   name: string;
   isFolder?: boolean;
   isSelected: boolean;
   isDefaultOpen?: boolean;
   children?: React.ReactNode;
   onClick?: any;
+  onCreateNewFolder: any;
 }
 
 const TreeItem: FC<TreeItemProps> = ({
@@ -24,16 +25,37 @@ const TreeItem: FC<TreeItemProps> = ({
   isFolder = true,
   isSelected,
   onClick,
+  onCreateNewFolder,
 }) => {
   const [isOpen, setIsOpen] = useState(isDefaultOpen);
 
-  const onTreeItemClickHandler = (id: number) => {
-    setIsOpen(!isOpen)
+  const onTreeItemClickHandler = (id: string) => {
+    setIsOpen(!isOpen);
     onClick && onClick(id);
-  }
+  };
 
-
-  
+  const menuItems = [
+    {
+      id: 0,
+      name: "New Folder",
+      onClick: onCreateNewFolder,
+    },
+    {
+      id: 1,
+      name: "New File",
+      onClick: () => {},
+    },
+    {
+      id: 2,
+      name: "Rename",
+      onClick: () => {},
+    },
+    {
+      id: 3,
+      name: "Delete",
+      onClick: () => {},
+    },
+  ];
 
   return (
     <ul>
@@ -54,7 +76,10 @@ const TreeItem: FC<TreeItemProps> = ({
           </span>
         )}
       </div>
-      <ContextMenu shouldShow={isSelected} menu={<ContextMenuItems />} />
+      <ContextMenu
+        shouldShow={isSelected}
+        menu={<ContextMenuItems menuItems={menuItems} />}
+      />
       {isOpen && <div className={styles.children}>{children}</div>}
     </ul>
   );

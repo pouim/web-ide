@@ -1,8 +1,8 @@
 export type TreeData = {
-    id: number;
-    parent: number | null;
+    id: string;
+    parent: string | null;
     name: string;
-    children?: TreeData[];
+    children: TreeData[];
     isOpen?: boolean;
     isFolder?: boolean;
 }

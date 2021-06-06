@@ -6,16 +6,22 @@ import TreeItem from "./treeview-item";
 interface TreeViewProps {
   data: TreeData[];
   onTreeItemClick?: any;
-  selectedID: number | null;
+  onCreateNewFolder: any;
+  selectedID: string | null;
 }
 
-const TreeView: FC<TreeViewProps> = ({ data, onTreeItemClick, selectedID }) => {
+const TreeView: FC<TreeViewProps> = ({
+  data,
+  onTreeItemClick,
+  onCreateNewFolder,
+  selectedID,
+}) => {
   /**
    * define selected item
    * @param id
    * @returns
    */
-  const isSelectedItem = (id: number) => id === selectedID;
+  const isSelectedItem = (id: string) => id === selectedID;
 
   /**
    * render child tree items
@@ -30,6 +36,7 @@ const TreeView: FC<TreeViewProps> = ({ data, onTreeItemClick, selectedID }) => {
             id={item.id}
             name={item.name}
             onClick={onTreeItemClick}
+            onCreateNewFolder={onCreateNewFolder}
             isDefaultOpen={item.isOpen}
             isFolder={item.isFolder}
             isSelected={isSelectedItem(item.id)}
@@ -43,6 +50,7 @@ const TreeView: FC<TreeViewProps> = ({ data, onTreeItemClick, selectedID }) => {
             id={item.id}
             name={item.name}
             onClick={onTreeItemClick}
+            onCreateNewFolder={onCreateNewFolder}
             isDefaultOpen={item.isOpen}
             isFolder={item.isFolder}
             isSelected={isSelectedItem(item.id)}
@@ -67,6 +75,7 @@ const TreeView: FC<TreeViewProps> = ({ data, onTreeItemClick, selectedID }) => {
               id={item.id}
               name={item.name}
               onClick={onTreeItemClick}
+              onCreateNewFolder={onCreateNewFolder}
               isDefaultOpen={item.isOpen}
               isFolder={item.isFolder}
               isSelected={isSelectedItem(item.id)}
@@ -80,6 +89,7 @@ const TreeView: FC<TreeViewProps> = ({ data, onTreeItemClick, selectedID }) => {
               id={item.id}
               name={item.name}
               onClick={onTreeItemClick}
+              onCreateNewFolder={onCreateNewFolder}
               isDefaultOpen={item.isOpen}
               isFolder={item.isFolder}
               isSelected={isSelectedItem(item.id)}

@@ -1,13 +1,26 @@
-import React from "react";
+import React, { FC } from "react";
 import styles from "./styles.module.css";
 
-export const ContextMenuItems = () => {
+
+
+type MenuItem = {
+  id: number;
+  name: string;
+  onClick: any;
+}
+interface ContextMenuItemsProps {
+  menuItems: MenuItem[]
+}
+
+
+export const ContextMenuItems: FC<ContextMenuItemsProps> = ({menuItems}) => {
   return (
     <ul className={styles.ContextMenuItems}>
-      <li>New Folder</li>
-      <li>New File</li>
-      <li>Rename</li>
-      <li>Delete</li>
+      {menuItems.map((item: MenuItem) => (
+        <li key={item.id} onClick={() => item.onClick(item.id)}>
+          {item.name}
+        </li>
+      ))}
     </ul>
   );
 };
