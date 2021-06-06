@@ -42,6 +42,32 @@ function App() {
 
      settreeData(updatedTreeData)
   }
+
+
+
+  function dfs(obj: any, targetId: any) {
+    if (obj.id === targetId) {
+      return obj
+    }
+    if (obj.nextItems) {
+      for (let item of obj.nextItems) {
+        let check: any = dfs(item, targetId)
+        if (check) {
+          return check
+        }
+      }
+    }
+    return null
+  }
+  
+  let result = null
+  
+  for (let obj of treeData) {
+    result = dfs(obj, selectedID)
+    if (result) {
+      break
+    }
+  }
  
 
   useEffect(() => {
