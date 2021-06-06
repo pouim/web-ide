@@ -2,13 +2,13 @@ import { type } from "os";
 import React, { FC, useState } from "react";
 import FileIcon from "../../../assets/icon/FileIcon";
 import FolderIcon from "../../../assets/icon/FolderIcon";
+import { TreeData } from "../../../interface";
 import ContextMenu from "../../UI/Context-Menu";
 import { ContextMenuItems } from "./Context-menu-items";
 import styles from "./styles.module.css";
 
 interface TreeItemProps {
-  id: string;
-  name: string;
+  item: TreeData;
   isFolder?: boolean;
   isSelected: boolean;
   isDefaultOpen?: boolean;
@@ -16,11 +16,14 @@ interface TreeItemProps {
   onClick?: any;
   onCreateNewFolder: any;
   onCreateNewFile: any;
+  onRenameStarted: any;
+  onDelete: any;
+  onRenameDone: any;
+  isEditMode: boolean;
 }
 
 const TreeItem: FC<TreeItemProps> = ({
-  id,
-  name,
+  item,
   isDefaultOpen = false,
   children,
   isFolder = true,
@@ -28,12 +31,16 @@ const TreeItem: FC<TreeItemProps> = ({
   onClick,
   onCreateNewFolder,
   onCreateNewFile,
+  onRenameStarted,
+  onRenameDone,
+  onDelete,
+  isEditMode,
 }) => {
   const [isOpen, setIsOpen] = useState(isDefaultOpen);
 
-  const onTreeItemClickHandler = (id: string) => {
+  const onTreeItemClickHandler = (item: TreeData) => {
     setIsOpen(!isOpen);
-    onClick && onClick(id);
+    onClick && onClick(item);
   };
 
   const menuItems = [
@@ -50,20 +57,20 @@ const TreeItem: FC<TreeItemProps> = ({
     {
       id: 2,
       name: "Rename",
-      onClick: () => {},
+      onClick: onRenameStarted,
     },
     {
       id: 3,
       name: "Delete",
-      onClick: () => {},
+      onClick: onDelete,
     },
   ];
 
   return (
     <ul>
       <div
-        key={id}
-        onClick={() => onTreeItemClickHandler(id)}
+        key={item.id}
+        onClick={() => onTreeItemClickHandler(item)}
         className={styles.wrapper}
       >
         {isFolder ? (
@@ -71,7 +78,17 @@ const TreeItem: FC<TreeItemProps> = ({
         ) : (
           <FileIcon width={20} height={20} color="#FEFEFE" />
         )}
-        <span className={isSelected ? styles.active : ""}>{name}</span>
+        {isEditMode && isSelected ? (
+          <input
+            placeholder="new name ... "
+            onKeyDown={onRenameDone}
+            autoFocus
+            className={styles.editInput}
+            type="text"
+          />
+        ) : (
+          <span className={isSelected ? styles.active : ""}>{item.name}</span>
+        )}
         {isFolder && (
           <span className={isOpen ? styles["rotate90"] : styles["arrow"]}>
             {">"}

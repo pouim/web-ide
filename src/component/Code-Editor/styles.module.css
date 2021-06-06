@@ -1,5 +1,6 @@
 .wrapper {
     height: 100%;
+    overflow-x: hidden;
 }
 
 .textarea {
@@ -7,4 +8,5 @@
     height: 100vh;
     font-size: 25px;
     padding: 5rem;
+    overflow-x: hidden;
 }

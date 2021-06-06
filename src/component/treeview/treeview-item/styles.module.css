@@ -11,6 +11,13 @@
 
 }
 
+.editInput {
+    outline: none;
+    background-color: transparent;
+    color: white;
+    border: none;
+}
+
 .arrow {
     transition: all 0.2s ease;
 }

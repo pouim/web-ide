@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import React, { FC, useState } from "react";
 import { TreeData } from "../../interface";
 import styles from "./styles.module.css";
 import TreeItem from "./treeview-item";
@@ -8,7 +8,11 @@ interface TreeViewProps {
   onTreeItemClick?: any;
   onCreateNewFolder: any;
   onCreateNewFile: any;
-  selectedID: string | null;
+  onRenameStarted: any;
+  onRenameDone: any;
+  onDelete: any;
+  isEditMode: boolean;
+  selectedItem: TreeData | null;
 }
 
 const TreeView: FC<TreeViewProps> = ({
@@ -16,14 +20,20 @@ const TreeView: FC<TreeViewProps> = ({
   onTreeItemClick,
   onCreateNewFolder,
   onCreateNewFile,
-  selectedID,
+  selectedItem,
+  onRenameStarted,
+  onRenameDone,
+  onDelete,
+  isEditMode,
 }) => {
+ 
+
   /**
    * define selected item
    * @param id
    * @returns
    */
-  const isSelectedItem = (id: string) => id === selectedID;
+  const isSelectedItem = (id: string) => id === selectedItem?.id;
 
   /**
    * render child tree items
@@ -35,11 +45,14 @@ const TreeView: FC<TreeViewProps> = ({
       if (item.children && item.children.length > 0) {
         return (
           <TreeItem
-            id={item.id}
-            name={item.name}
+            item={item}
             onClick={onTreeItemClick}
             onCreateNewFolder={onCreateNewFolder}
             onCreateNewFile={onCreateNewFile}
+            onRenameStarted={onRenameStarted}
+            onRenameDone={onRenameDone}
+            onDelete={onDelete}
+            isEditMode={isEditMode}
             isDefaultOpen={item.isOpen}
             isFolder={item.isFolder}
             isSelected={isSelectedItem(item.id)}
@@ -50,11 +63,14 @@ const TreeView: FC<TreeViewProps> = ({
       } else {
         return (
           <TreeItem
-            id={item.id}
-            name={item.name}
+            item={item}
             onClick={onTreeItemClick}
             onCreateNewFolder={onCreateNewFolder}
             onCreateNewFile={onCreateNewFile}
+            onRenameStarted={onRenameStarted}
+            onRenameDone={onRenameDone}
+            onDelete={onDelete}
+            isEditMode={isEditMode}
             isDefaultOpen={item.isOpen}
             isFolder={item.isFolder}
             isSelected={isSelectedItem(item.id)}
@@ -76,11 +92,14 @@ const TreeView: FC<TreeViewProps> = ({
         if (item.children && item.children.length > 0) {
           return (
             <TreeItem
-              id={item.id}
-              name={item.name}
+              item={item}
               onClick={onTreeItemClick}
               onCreateNewFolder={onCreateNewFolder}
               onCreateNewFile={onCreateNewFile}
+              onRenameStarted={onRenameStarted}
+              onRenameDone={onRenameDone}
+              onDelete={onDelete}
+              isEditMode={isEditMode}
               isDefaultOpen={item.isOpen}
               isFolder={item.isFolder}
               isSelected={isSelectedItem(item.id)}
@@ -91,11 +110,14 @@ const TreeView: FC<TreeViewProps> = ({
         } else {
           return (
             <TreeItem
-              id={item.id}
-              name={item.name}
+              item={item}
               onClick={onTreeItemClick}
               onCreateNewFolder={onCreateNewFolder}
               onCreateNewFile={onCreateNewFile}
+              onRenameDone={onRenameDone}
+              onRenameStarted={onRenameStarted}
+              onDelete={onDelete}
+              isEditMode={isEditMode}
               isDefaultOpen={item.isOpen}
               isFolder={item.isFolder}
               isSelected={isSelectedItem(item.id)}

@@ -5,4 +5,5 @@ export type TreeData = {
     children: TreeData[];
     isOpen?: boolean;
     isFolder?: boolean;
+    code?: string;
 }
