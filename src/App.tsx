@@ -16,6 +16,70 @@ function App() {
   };
 
 
+
+  const  dfs = (obj: TreeData, targetId: any) => {
+    if (obj.id === targetId) {
+      return obj
+    }
+    if (obj.children) {
+      for (let item of obj.children) {
+        let check: any = dfs(item, targetId)
+        if (check) {
+          return check
+        }
+      }
+    }
+    return null
+  }
+
+
+
+  const findItem = (data: TreeData[]) => {
+    let result = null;
+
+    for (let obj of data) {
+      result = dfs(obj, selectedID);
+      if (result) {
+        break;
+      }
+    }
+
+    return result
+  };
+
+
+
+  const updateTreeData = (
+    data: TreeData[],
+    updatedItem: TreeData
+  ): TreeData[] => {
+    const newTree = data.map((item: TreeData) => {
+      if (item.id === updatedItem.id) {
+        return updatedItem;
+      }
+
+      if (
+        item.id !== updatedItem.id &&
+        item.children &&
+        item.children.length > 0
+      ) {
+        const foundedChild = findItem(item.children);
+        const updatedChildren = item.children.map((childItem: TreeData) =>
+          childItem.id === foundedChild.id
+            ? updatedItem
+            : childItem
+        );
+
+        return { ...item, children: updatedChildren };
+      }
+
+      return item;
+    });
+
+    return newTree;
+  };
+
+
   const onCreateNewFolder = () => {
      const newFolder: TreeData = {
        id: uuid(),
@@ -25,54 +89,27 @@ function App() {
        isOpen: false,
        isFolder: true,
      }
+    
+    const foundedItem = findItem(treeData);
+    const updatedItem = {
+      ...foundedItem,
+      children: [...foundedItem.children, newFolder],
+    };
+    const updatedeTreeData = updateTreeData(treeData, updatedItem);
 
-     const updatedTreeData = treeData.map((item: any) =>
-       !item.parent
-         ? item.id === selectedID
-           ? { ...item, children: [...item.children, newFolder] }
-           : item
-         : item.children && item.children.length > 0
-         ? item.children.map((childItem: any) =>
-             childItem.id === selectedID
-               ? { ...childItem, children: [...childItem.children, newFolder] }
-               : childItem
-           )
-         : initialTreeData
-     );
+    settreeData(updatedeTreeData);
 
-     settreeData(updatedTreeData)
   }
 
-
-
-  function dfs(obj: any, targetId: any) {
-    if (obj.id === targetId) {
-      return obj
-    }
-    if (obj.nextItems) {
-      for (let item of obj.nextItems) {
-        let check: any = dfs(item, targetId)
-        if (check) {
-          return check
-        }
-      }
-    }
-    return null
-  }
+    
+    
   
-  let result = null
-  
-  for (let obj of treeData) {
-    result = dfs(obj, selectedID)
-    if (result) {
-      break
-    }
-  }
- 
 
-  useEffect(() => {
-    console.log(treeData, selectedID)
-  }, [treeData])
+
+
+  
+
+  
 
   return (
     <div className="container">
