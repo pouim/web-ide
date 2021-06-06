@@ -5,6 +5,7 @@ import TreeView from "./component/treeview";
 import { TreeData } from "./interface";
 import { initialTreeData } from "./mock";
 import uuid from 'react-uuid'
+import { isTemplateMiddle } from "typescript";
 
 function App() {
   const [treeData, settreeData] = useState<TreeData[]>(initialTreeData);
@@ -25,15 +26,18 @@ function App() {
        isFolder: true,
      }
 
-     const updatedTreeData = treeData.map((item: TreeData) =>
-       item.children.map((childItem) =>
-         childItem.id === selectedID
-           ? {
-               ...childItem,
-               children: [...childItem.children, newFolder],
-             }
-           : childItem
-       )
+     const updatedTreeData = treeData.map((item: any) =>
+       !item.parent
+         ? item.id === selectedID
+           ? { ...item, children: [...item.children, newFolder] }
+           : item
+         : item.children && item.children.length > 0
+         ? item.children.map((childItem: any) =>
+             childItem.id === selectedID
+               ? { ...childItem, children: [...childItem.children, newFolder] }
+               : childItem
+           )
+         : initialTreeData
      );
 
      settreeData(updatedTreeData)
