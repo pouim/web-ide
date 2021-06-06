@@ -109,6 +109,7 @@ function App() {
       id: uuid(),
       name: "New File",
       parent: selectedItem.id,
+      code: '',
       children: [],
       isOpen: false,
       isFolder: false,
