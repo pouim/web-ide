@@ -70,6 +70,7 @@ const TreeItem: FC<TreeItemProps> = ({
     <ul>
       <div
         key={item.id}
+        onDoubleClick={onRenameStarted}
         onClick={() => onTreeItemClickHandler(item)}
         className={styles.wrapper}
       >

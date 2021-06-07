@@ -5,6 +5,7 @@ import TreeView from "./component/treeview";
 import { TreeData } from "./interface";
 import { initialTreeData } from "./mock";
 import uuid from 'react-uuid'
+import { isTemplateMiddle } from "typescript";
 
 function App() {
   const [treeData, settreeData] = useState<TreeData[]>(initialTreeData);
@@ -21,7 +22,9 @@ function App() {
   const loadedTreeData = localStorage.getItem('treeData');
   useEffect(() => {
     
-    loadedTreeData && settreeData(JSON.parse(loadedTreeData))
+    loadedTreeData &&
+      JSON.parse(loadedTreeData).length > 0 &&
+      settreeData(JSON.parse(loadedTreeData));
   }, [])
 
   const onTreeItemClickHandler = (item: TreeData) => {
@@ -43,11 +46,11 @@ function App() {
     return null;
   };
 
-  const findItem = (data: TreeData[]) => {
+  const findItem = (data: TreeData[], id: string) => {
     let result = null;
 
     for (let obj of data) {
-      result = dfs(obj, selectedItem.id);
+      result = dfs(obj, id);
       if (result) {
         break;
       }
@@ -56,11 +59,39 @@ function App() {
     return result;
   };
 
+  const changeItem = (data: TreeData[], id: string, newItem: TreeData) => {
+    let result = null;
+
+    result = data.map((item: TreeData) =>{
+      let founded = dfs(item, id)
+         if(founded)
+         return { ...founded, children: [...item.children, newItem] }
+       return item
+    }
+     
+    );
+
+    return result;
+  };
+
+
+  console.log(
+    changeItem(treeData, selectedItem.id, {
+      id: uuid(),
+      name: "Pouyan",
+      parent: selectedItem.id,
+      children: [],
+      isOpen: false,
+      isFolder: true,
+    })
+  );
+
   const updateTreeData = (
     data: TreeData[],
     updatedItem: TreeData
   ): TreeData[] => {
-    const newTree = data.map((item: TreeData) => {
+    console.log('data', data)
+    return data.map((item: TreeData) => {
       if (item.id === updatedItem.id) {
         return updatedItem;
       }
@@ -70,10 +101,20 @@ function App() {
         item.children &&
         item.children.length > 0
       ) {
-        const foundedChild = findItem(item.children);
-        const updatedChildren = item.children.map((childItem: TreeData) =>
-          childItem.id === foundedChild.id ? updatedItem : childItem
-        );
+        const foundedChild = findItem(item.children, selectedItem.id);
+        const updatedChildren = item.children.map((childItem: TreeData) => {
+          if (childItem.id === foundedChild.id) {
+            return updatedItem;
+          }
+          if (
+            childItem.id !== foundedChild.id &&
+            childItem.children &&
+            childItem.children.length > 0
+          ) {
+            updateTreeData(childItem.children, updatedItem);
+          }
+          return childItem;
+        });
 
         return { ...item, children: updatedChildren };
       }
@@ -81,8 +122,13 @@ function App() {
       return item;
     });
 
-    return newTree;
+
   };
+
+
+  
+
+
 
   const onCreateNewFolder = () => {
     const newFolder: TreeData = {
@@ -94,7 +140,7 @@ function App() {
       isFolder: true,
     };
 
-    const foundedItem = findItem(treeData);
+    const foundedItem = findItem(treeData, selectedItem.id);
     const updatedItem = {
       ...foundedItem,
       children: [...foundedItem.children, newFolder],
@@ -115,7 +161,7 @@ function App() {
       isFolder: false,
     };
 
-    const foundedItem = findItem(treeData);
+    const foundedItem = findItem(treeData, selectedItem.id);
     const updatedItem = {
       ...foundedItem,
       children: [...foundedItem.children, newFile],
@@ -131,7 +177,7 @@ function App() {
 
   const onRenameDone = (e: any) => {
     if (e.key === "Enter") {
-      const foundedItem = findItem(treeData);
+      const foundedItem = findItem(treeData, selectedItem.id);
       const updatedItem = {
         ...foundedItem,
         name: e.target.value,
@@ -164,7 +210,7 @@ function App() {
   };
 
   const onSaveCodeHandler = (e: any) => {
-    const foundedItem = findItem(treeData);
+    const foundedItem = findItem(treeData, selectedItem.id);
     const updatedItem = {
       ...foundedItem,
       code: e.target.value,
